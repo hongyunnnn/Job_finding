@@ -1,0 +1,2610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>中国企业招聘信息平台</title>
+  <hta:application
+    id="recruitApp"
+    applicationname="中国企业招聘信息平台"
+    border="thick"
+    caption="yes"
+    contextmenu="no"
+    innerversion="1.0"
+    maximizebutton="yes"
+    minimizebutton="yes"
+    navigable="no"
+    scroll="no"
+    selection="yes"
+    showintaskbar="yes"
+    singleinstance="yes"
+    sysmenu="yes"
+    version="1.0"
+    windowstate="maximize"
+  />
+  <style>
+/* ============================================================
+   中国企业招聘信息平台 — 样式表
+   配色：绿色(#2ecc71) + 白色(#ffffff) + 深海军蓝(#2c3e50)
+   ============================================================ */
+
+/* --- CSS 变量 --- */
+:root {
+  --green: #2ecc71;
+  --green-dark: #27ae60;
+  --green-light: #e8f8f0;
+  --green-bg: #f4fdf8;
+  --white: #ffffff;
+  --navy: #2c3e50;
+  --navy-light: #5a6d80;
+  --navy-border: #dde4ea;
+  --navy-bg: #f5f7fa;
+  --shadow-sm: 0 1px 3px rgba(44, 62, 80, 0.06);
+  --shadow-md: 0 4px 16px rgba(44, 62, 80, 0.08);
+  --shadow-lg: 0 8px 30px rgba(44, 62, 80, 0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+  --max-width: 1280px;
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background-color: var(--navy-bg);
+  color: var(--navy);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { color: var(--green-dark); text-decoration: none; }
+a:hover { color: var(--green); }
+
+/* --- Header --- */
+.header {
+  background: var(--white);
+  border-bottom: 1px solid var(--navy-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo { flex-shrink: 0; }
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--navy-light);
+  background: var(--green-light);
+  padding: 2px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* --- Favorites Button --- */
+.fav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 2px solid var(--green);
+  border-radius: 24px;
+  background: var(--white);
+  color: var(--green-dark);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all var(--transition);
+}
+.fav-btn:hover { background: var(--green-light); }
+.fav-btn.active { background: var(--green); color: var(--white); }
+.fav-badge {
+  background: var(--green);
+  color: var(--white);
+  font-size: 0.75rem;
+  min-width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  padding: 0 6px;
+}
+
+/* --- Main Content --- */
+.main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 20px 24px 40px;
+}
+
+/* --- Toolbar --- */
+.toolbar {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+}
+.search-box { position: relative; margin-bottom: 16px; }
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--navy-light);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  padding: 12px 44px 12px 44px;
+  border: 2px solid var(--navy-border);
+  border-radius: 28px;
+  font-size: 1rem;
+  color: var(--navy);
+  background: var(--white);
+  transition: border-color var(--transition);
+  outline: none;
+}
+.search-input:focus { border-color: var(--green); }
+.search-input::placeholder { color: var(--navy-light); }
+.search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--navy-light);
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background var(--transition);
+  visibility: hidden;
+}
+.search-clear.visible { visibility: visible; }
+.search-clear:hover { background: var(--navy-bg); }
+
+/* --- Category Filters --- */
+.filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.category-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.category-pill {
+  padding: 6px 16px;
+  border: 1.5px solid var(--navy-border);
+  border-radius: 20px;
+  background: var(--white);
+  color: var(--navy);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  user-select: none;
+}
+.category-pill:hover { border-color: var(--green); color: var(--green-dark); }
+.category-pill.active { background: var(--green); border-color: var(--green); color: var(--white); }
+
+/* --- Sort Box --- */
+.sort-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.campus-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--navy);
+  user-select: none;
+}
+.campus-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+.sort-select {
+  padding: 6px 12px;
+  border: 1.5px solid var(--navy-border);
+  border-radius: 20px;
+  background: var(--white);
+  color: var(--navy);
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+}
+.sort-select:focus { border-color: var(--green); }
+
+/* --- Results Info --- */
+.results-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.results-count {
+  font-size: 0.9rem;
+  color: var(--navy-light);
+}
+
+/* --- Card Grid --- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 18px;
+}
+
+/* --- Company Card --- */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--navy-border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.card-star {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--navy-border);
+  transition: color var(--transition), transform var(--transition);
+}
+.card-star:hover { transform: scale(1.2); }
+.card-star.favorited { color: var(--green); }
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-right: 28px;
+}
+.card-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+.card-name-group { min-width: 0; }
+.card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.card-name-en {
+  font-size: 0.75rem;
+  color: var(--navy-light);
+  margin-top: 1px;
+}
+.card-industry {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: var(--green-dark);
+  background: var(--green-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+.card-cities {
+  font-size: 0.78rem;
+  color: var(--navy-light);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.card-cities svg { flex-shrink: 0; }
+
+/* --- Positions --- */
+.card-positions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+.position-tag {
+  font-size: 0.76rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--navy-bg);
+  color: var(--navy);
+  border: 1px solid var(--navy-border);
+  white-space: nowrap;
+}
+
+/* --- Tags --- */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.tag {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-weight: 600;
+}
+
+/* --- Card Actions --- */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+.btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+}
+.btn-primary { background: var(--green); color: var(--white); }
+.btn-primary:hover { background: var(--green-dark); color: var(--white); }
+.btn-outline {
+  background: var(--white);
+  color: var(--green-dark);
+  border: 1.5px solid var(--green);
+}
+.btn-outline:hover { background: var(--green-light); color: var(--green-dark); }
+
+/* --- Empty State --- */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--navy-light);
+}
+.empty-state svg {
+  margin-bottom: 16px;
+  stroke: var(--navy-border);
+}
+.empty-state h3 {
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.empty-state p { font-size: 0.9rem; }
+
+/* --- Footer --- */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--navy-light);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--navy-border);
+  background: var(--white);
+}
+.footer p { line-height: 1.8; }
+
+/* --- Back to Top --- */
+.back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition);
+  z-index: 50;
+}
+.back-to-top.visible { opacity: 1; visibility: visible; }
+.back-to-top:hover { background: var(--green-dark); transform: translateY(-2px); }
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .header-inner { padding: 10px 16px; }
+  .title { font-size: 1.1rem; }
+  .subtitle { display: none; }
+  .main { padding: 16px 14px 32px; }
+  .toolbar { padding: 14px; }
+  .filter-row { flex-direction: column; align-items: stretch; }
+  .sort-box { justify-content: flex-end; }
+}
+@media (max-width: 600px) {
+  .card-grid { grid-template-columns: 1fr; gap: 12px; }
+  .title { font-size: 1rem; }
+  .search-input { font-size: 0.9rem; padding: 10px 40px 10px 40px; }
+  .card { padding: 16px; }
+  .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <!-- 内联 SVG Logo -->
+        <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="36" height="36" fill="none">
+          <rect width="64" height="64" rx="14" fill="#2ecc71"/>
+          <path d="M20 22h24v4H20zM20 30h18v4H20zM20 38h14v4H20z" fill="#ffffff"/>
+          <circle cx="46" cy="40" r="10" fill="#2c3e50"/>
+          <path d="M43 40l2 2 4-4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h1 class="title">中国企业招聘信息平台</h1>
+        <span class="subtitle">Fortune China 500 · CS专场</span>
+      </div>
+      <div class="header-right">
+        <button class="fav-btn" id="favToggle" title="查看收藏夹">
+          <svg class="fav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          <span>收藏夹</span>
+          <span class="fav-badge" id="favCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    <section class="toolbar">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="搜索公司、职位、城市…" autocomplete="off">
+        <button class="search-clear" id="searchClear" title="清除搜索">&times;</button>
+      </div>
+      <div class="filter-row">
+        <div class="category-filters" id="categoryFilters"></div>
+        <div class="sort-box">
+          <label class="campus-toggle">
+            <input type="checkbox" id="campusOnly"><span class="toggle-label">仅校招</span>
+          </label>
+          <select id="sortSelect" class="sort-select">
+            <option value="default">默认排序</option>
+            <option value="name">按名称 A-Z</option>
+            <option value="rank">按排名</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <div class="results-info">
+      <span class="results-count" id="resultsCount">找到 0 家公司</span>
+    </div>
+
+    <section class="card-grid" id="cardGrid"></section>
+
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <h3>没有找到匹配的公司</h3>
+      <p>试试调整搜索条件或筛选条件</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>数据来源：各公司官网、校招页面 · Fortune China 500</p>
+    <p>数据更新于 2026-05-27 · 仅供学习参考</p>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" title="回到顶部">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+<script>
+// ============================================================
+// 工具函数：收藏夹管理、防抖、格式化
+// ============================================================
+
+const FAVORITES_KEY = 'job-favorites';
+
+/** 从 localStorage 读取收藏夹ID列表 */
+function getFavorites() {
+  try { return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []; }
+  catch { return []; }
+}
+
+/** 保存收藏夹ID列表到 localStorage */
+function saveFavorites(list) {
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(list));
+}
+
+/** 判断某公司是否已收藏 */
+function isFavorite(id) {
+  return getFavorites().includes(id);
+}
+
+/** 切换收藏状态，返回切换后是否为收藏 */
+function toggleFavorite(id) {
+  var list = getFavorites();
+  var idx = list.indexOf(id);
+  if (idx === -1) list.push(id);
+  else list.splice(idx, 1);
+  saveFavorites(list);
+  return list.indexOf(id) !== -1;
+}
+
+/** 获取收藏夹数量 */
+function getFavoritesCount() {
+  return getFavorites().length;
+}
+
+/**
+ * 防抖函数：延迟执行，避免高频触发
+ * @param {Function} fn - 要执行的函数
+ * @param {number} delay - 延迟毫秒数
+ */
+function debounce(fn, delay) {
+  var timer;
+  return function () {
+    var ctx = this, args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () { fn.apply(ctx, args); }, delay);
+  };
+}
+
+/** 格式化城市列表，最多显示3个 */
+function formatCities(cities) {
+  if (!cities || cities.length === 0) return '';
+  return cities.slice(0, 3).join(' / ');
+}
+</script>
+<script>
+// ============================================================
+// 数据集：111家Fortune中国500强企业中招聘CS岗位的企业
+// 最后更新：2026-05-27
+// ============================================================
+var COMPANIES = []; // 占位，由下方数据填充
+</script>
+<script>
+// 内联数据（data.js 内容）
+COMPANIES = [
+  // ============================================================
+  // 一、互联网巨头（16家）
+  // ============================================================
+  {
+    id: "alibaba",
+    nameCN: "阿里巴巴", nameEN: "Alibaba Group",
+    industry: "互联网",
+    categories: ["互联网", "电商", "云计算"],
+    website: "https://www.alibaba.com",
+    careerPage: "https://talent.alibaba.com",
+    careerCampus: "https://campus.alibaba.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析", "客户端开发", "测试开发"],
+    description: "全球领先的电子商务和云计算公司，业务涵盖电商、云计算、数字媒体、本地生活等",
+    fortuneRank: 23,
+    tags: ["头部大厂", "杭州", "阿里系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["杭州", "北京", "深圳", "上海", "广州", "成都"]
+  },
+  {
+    id: "tencent",
+    nameCN: "腾讯", nameEN: "Tencent",
+    industry: "互联网",
+    categories: ["互联网", "游戏", "云计算", "金融科技"],
+    website: "https://www.tencent.com",
+    careerPage: "https://careers.tencent.com",
+    careerCampus: "https://join.qq.com",
+    positions: ["后端开发", "前端开发", "游戏开发", "算法工程师", "产品经理", "安全工程师", "客户端开发"],
+    description: "中国最大的互联网综合服务提供商之一，旗下拥有微信、QQ、腾讯游戏等核心产品",
+    fortuneRank: 5,
+    tags: ["头部大厂", "深圳", "腾讯系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "北京", "上海", "广州", "成都", "武汉"]
+  },
+  {
+    id: "bytedance",
+    nameCN: "字节跳动", nameEN: "ByteDance",
+    industry: "互联网",
+    categories: ["互联网", "AI/大数据", "媒体/社区"],
+    website: "https://www.bytedance.com",
+    careerPage: "https://jobs.bytedance.com",
+    careerCampus: "https://campus.bytedance.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析", "客户端开发", "测试开发"],
+    description: "全球领先的信息平台公司，旗下产品包括抖音、TikTok、今日头条、飞书等",
+    fortuneRank: 18,
+    tags: ["头部大厂", "北京", "字节系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "杭州", "成都", "广州"]
+  },
+  {
+    id: "baidu",
+    nameCN: "百度", nameEN: "Baidu",
+    industry: "互联网",
+    categories: ["互联网", "AI/大数据", "云计算"],
+    website: "https://www.baidu.com",
+    careerPage: "https://talent.baidu.com",
+    careerCampus: "https://talent.baidu.com/jobs/campus",
+    positions: ["后端开发", "前端开发", "算法工程师", "AI研究员", "产品经理", "自动驾驶工程师"],
+    description: "全球最大的中文搜索引擎，在AI、自动驾驶、大语言模型领域持续深耕",
+    fortuneRank: 35,
+    tags: ["头部大厂", "北京", "百度系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "广州"]
+  },
+  {
+    id: "meituan",
+    nameCN: "美团", nameEN: "Meituan",
+    industry: "互联网",
+    categories: ["互联网", "电商", "物流"],
+    website: "https://www.meituan.com",
+    careerPage: "https://zhaopin.meituan.com",
+    careerCampus: "https://campus.meituan.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析", "客户端开发"],
+    description: "中国领先的生活服务电子商务平台，涵盖外卖、到店、酒店旅游等业务",
+    fortuneRank: 12,
+    tags: ["头部大厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "成都", "厦门"]
+  },
+  {
+    id: "netease",
+    nameCN: "网易", nameEN: "NetEase",
+    industry: "互联网",
+    categories: ["互联网", "游戏", "媒体/社区"],
+    website: "https://www.netease.com",
+    careerPage: "https://hr.163.com",
+    careerCampus: "https://campus.163.com",
+    positions: ["后端开发", "前端开发", "游戏开发", "算法工程师", "产品经理", "游戏策划"],
+    description: "中国领先的互联网技术公司，业务涵盖游戏、音乐、教育、电商等",
+    fortuneRank: 48,
+    tags: ["大厂", "广州", "杭州"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["广州", "杭州", "北京", "上海"]
+  },
+  {
+    id: "kuaishou",
+    nameCN: "快手", nameEN: "Kuaishou",
+    industry: "互联网",
+    categories: ["互联网", "媒体/社区", "AI/大数据"],
+    website: "https://www.kuaishou.com",
+    careerPage: "https://zhaopin.kuaishou.cn",
+    careerCampus: "https://campus.kuaishou.cn",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "客户端开发", "数据分析"],
+    description: "中国领先的短视频和直播平台，拥有庞大的用户基础和内容生态",
+    fortuneRank: 68,
+    tags: ["大厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "杭州", "深圳", "上海", "成都"]
+  },
+  {
+    id: "pinduoduo",
+    nameCN: "拼多多", nameEN: "Pinduoduo (PDD Holdings)",
+    industry: "互联网",
+    categories: ["互联网", "电商"],
+    website: "https://www.pinduoduo.com",
+    careerPage: "https://careers.pinduoduo.com",
+    careerCampus: "https://campus.pinduoduo.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析", "客户端开发"],
+    description: "中国领先的电商平台，以社交拼团模式快速崛起，旗下还有Temu海外电商",
+    fortuneRank: 15,
+    tags: ["头部大厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海"]
+  },
+  {
+    id: "jd",
+    nameCN: "京东", nameEN: "JD.com",
+    industry: "互联网",
+    categories: ["互联网", "电商", "物流"],
+    website: "https://www.jd.com",
+    careerPage: "https://zhaopin.jd.com",
+    careerCampus: "https://campus.jd.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析", "物流技术工程师"],
+    description: "中国最大的自营式电商企业，拥有完善的物流体系和云计算平台",
+    fortuneRank: 8,
+    tags: ["头部大厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "成都", "武汉"]
+  },
+  {
+    id: "bilibili",
+    nameCN: "哔哩哔哩", nameEN: "Bilibili",
+    industry: "互联网",
+    categories: ["互联网", "媒体/社区", "游戏"],
+    website: "https://www.bilibili.com",
+    careerPage: "https://jobs.bilibili.com",
+    careerCampus: "https://campus.bilibili.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "客户端开发", "游戏开发"],
+    description: "中国年轻世代高度聚集的文化社区和视频平台，以弹幕文化著称",
+    fortuneRank: 178,
+    tags: ["大厂", "上海", "二次元"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "广州"]
+  },
+  {
+    id: "xiaohongshu",
+    nameCN: "小红书", nameEN: "Xiaohongshu (RED)",
+    industry: "互联网",
+    categories: ["互联网", "电商", "媒体/社区"],
+    website: "https://www.xiaohongshu.com",
+    careerPage: "https://job.xiaohongshu.com",
+    careerCampus: "https://campus.xiaohongshu.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析", "客户端开发"],
+    description: "中国领先的生活方式分享平台，融合社区和电商两大核心业务",
+    fortuneRank: 220,
+    tags: ["大厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "武汉"]
+  },
+  {
+    id: "360",
+    nameCN: "三六零", nameEN: "Qihoo 360",
+    industry: "互联网",
+    categories: ["互联网", "AI/大数据"],
+    website: "https://www.360.cn",
+    careerPage: "https://hr.360.cn",
+    careerCampus: "https://campus.360.cn",
+    positions: ["后端开发", "前端开发", "安全工程师", "算法工程师", "产品经理", "测试开发"],
+    description: "中国领先的互联网安全服务和产品提供商，致力于网络安全和大模型研发",
+    fortuneRank: 156,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "成都"]
+  },
+  {
+    id: "sohu",
+    nameCN: "搜狐", nameEN: "Sohu",
+    industry: "互联网",
+    categories: ["互联网", "媒体/社区"],
+    website: "https://www.sohu.com",
+    careerPage: "https://hr.sohu.com",
+    careerCampus: "https://campus.sohu.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "客户端开发"],
+    description: "中国领先的互联网媒体、搜索和游戏服务集团",
+    fortuneRank: 185,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京"]
+  },
+  {
+    id: "sina",
+    nameCN: "新浪", nameEN: "Sina (Weibo)",
+    industry: "互联网",
+    categories: ["互联网", "媒体/社区"],
+    website: "https://www.sina.com.cn",
+    careerPage: "https://career.sina.com.cn",
+    careerCampus: "https://campus.sina.com.cn",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "客户端开发", "数据分析"],
+    description: "中国领先的在线媒体和社交平台，旗下拥有新浪微博等核心产品",
+    fortuneRank: 195,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "杭州"]
+  },
+  {
+    id: "ctrip",
+    nameCN: "携程", nameEN: "Trip.com Group",
+    industry: "互联网",
+    categories: ["互联网", "电商"],
+    website: "https://www.ctrip.com",
+    careerPage: "https://job.ctrip.com",
+    careerCampus: "https://campus.ctrip.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析", "客户端开发"],
+    description: "全球领先的一站式旅行服务公司，旗下拥有携程、去哪儿、Trip.com等品牌",
+    fortuneRank: 89,
+    tags: ["大厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "广州", "成都"]
+  },
+  {
+    id: "vipshop",
+    nameCN: "唯品会", nameEN: "Vipshop",
+    industry: "互联网",
+    categories: ["互联网", "电商"],
+    website: "https://www.vip.com",
+    careerPage: "https://recruitment.vip.com",
+    careerCampus: "https://campus.vip.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析", "测试开发"],
+    description: "中国领先的品牌折扣电商平台，专注于品牌特卖",
+    fortuneRank: 112,
+    tags: ["中厂", "广州"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["广州", "上海", "北京"]
+  },
+  {
+    id: "zhihu",
+    nameCN: "知乎", nameEN: "Zhihu",
+    industry: "互联网",
+    categories: ["互联网", "媒体/社区"],
+    website: "https://www.zhihu.com",
+    careerPage: "https://www.zhihu.com/careers",
+    careerCampus: "https://campus.zhihu.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "客户端开发"],
+    description: "中国领先的知识分享和问答社区平台",
+    fortuneRank: 380,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京"]
+  },
+  // ============================================================
+  // 二、电商与生活服务（5家）
+  // ============================================================
+  {
+    id: "dewu",
+    nameCN: "得物", nameEN: "Dewu (Poizon)",
+    industry: "互联网",
+    categories: ["互联网", "电商"],
+    website: "https://www.dewu.com",
+    careerPage: "https://zhaopin.dewu.com",
+    careerCampus: "https://campus.dewu.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "客户端开发", "测试开发"],
+    description: "中国领先的潮流电商平台，集正品潮流装备交易、潮流生活社区于一体",
+    fortuneRank: 320,
+    tags: ["中厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "杭州"]
+  },
+  {
+    id: "beike",
+    nameCN: "贝壳找房", nameEN: "Beike (KE Holdings)",
+    industry: "互联网",
+    categories: ["互联网", "电商"],
+    website: "https://www.ke.com",
+    careerPage: "https://careers.ke.com",
+    careerCampus: "https://campus.ke.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析", "客户端开发"],
+    description: "中国领先的线上线下一体化房产交易和服务平台",
+    fortuneRank: 95,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "杭州"]
+  },
+  {
+    id: "58",
+    nameCN: "58同城", nameEN: "58.com",
+    industry: "互联网",
+    categories: ["互联网", "电商"],
+    website: "https://www.58.com",
+    careerPage: "https://hr.58.com",
+    careerCampus: "https://campus.58.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "客户端开发"],
+    description: "中国领先的生活服务信息平台，覆盖招聘、房产、二手车、本地生活等",
+    fortuneRank: 165,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "长沙"]
+  },
+  {
+    id: "iqiyi",
+    nameCN: "爱奇艺", nameEN: "iQIYI",
+    industry: "互联网",
+    categories: ["互联网", "媒体/社区"],
+    website: "https://www.iqiyi.com",
+    careerPage: "https://zhaopin.iqiyi.com",
+    careerCampus: "https://campus.iqiyi.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "客户端开发", "产品经理", "数据分析"],
+    description: "中国领先的在线视频平台，拥有海量正版高清视频内容",
+    fortuneRank: 255,
+    tags: ["中厂", "北京", "百度系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "成都"]
+  },
+  {
+    id: "manbang",
+    nameCN: "满帮集团", nameEN: "Manbang Group (Full Truck Alliance)",
+    industry: "互联网",
+    categories: ["互联网", "物流"],
+    website: "https://www.ymm56.com",
+    careerPage: "https://zhaopin.ymm56.com",
+    careerCampus: "https://campus.ymm56.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据分析"],
+    description: "中国最大的数字货运平台，致力于物流行业的数字化升级",
+    fortuneRank: 280,
+    tags: ["中厂", "贵阳", "南京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["贵阳", "南京", "上海"]
+  },
+  // ============================================================
+  // 三、电信与基础设施（6家）
+  // ============================================================
+  {
+    id: "huawei",
+    nameCN: "华为", nameEN: "Huawei Technologies",
+    industry: "电信",
+    categories: ["电信", "硬件", "AI/大数据", "云计算"],
+    website: "https://www.huawei.com",
+    careerPage: "https://career.huawei.com",
+    careerCampus: "https://career.huawei.com/campus",
+    positions: ["软件开发", "AI工程师", "算法工程师", "嵌入式开发", "芯片设计", "通信协议工程师", "云计算工程师"],
+    description: "全球领先的ICT基础设施和智能终端提供商，在5G、芯片设计、云计算领域全球领先",
+    fortuneRank: 1,
+    tags: ["头部大厂", "深圳", "华为系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "北京", "上海", "杭州", "成都", "西安", "武汉", "南京", "东莞"]
+  },
+  {
+    id: "zte",
+    nameCN: "中兴通讯", nameEN: "ZTE Corporation",
+    industry: "电信",
+    categories: ["电信", "硬件"],
+    website: "https://www.zte.com.cn",
+    careerPage: "https://job.zte.com.cn",
+    careerCampus: "https://campus.zte.com.cn",
+    positions: ["通信协议工程师", "嵌入式开发", "软件开发", "算法工程师", "芯片设计", "FPGA工程师"],
+    description: "全球领先的通信设备制造商，在5G、光通信领域拥有核心技术",
+    fortuneRank: 42,
+    tags: ["大厂", "深圳"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "南京", "上海", "西安", "北京"]
+  },
+  {
+    id: "chinamobile",
+    nameCN: "中国移动", nameEN: "China Mobile",
+    industry: "电信",
+    categories: ["电信", "云计算"],
+    website: "https://www.chinamobileltd.com",
+    careerPage: "https://job.10086.cn",
+    careerCampus: "https://campus.10086.cn",
+    positions: ["软件开发", "通信工程师", "数据分析", "云计算工程师", "网络安全", "产品经理"],
+    description: "全球最大的移动通信运营商，拥有庞大的用户基础和5G网络",
+    fortuneRank: 2,
+    tags: ["央企", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "杭州", "成都", "广州", "南京", "各省会城市"]
+  },
+  {
+    id: "chinatelecom",
+    nameCN: "中国电信", nameEN: "China Telecom",
+    industry: "电信",
+    categories: ["电信", "云计算"],
+    website: "https://www.chinatelecom-h.com",
+    careerPage: "https://zhaopin.chinatelecom.com.cn",
+    careerCampus: "https://campus.chinatelecom.com.cn",
+    positions: ["软件开发", "通信工程师", "云计算工程师", "网络安全", "数据分析", "AI工程师"],
+    description: "中国三大电信运营商之一，天翼云是国内领先的云计算服务商",
+    fortuneRank: 3,
+    tags: ["央企", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "广州", "成都", "各省会城市"]
+  },
+  {
+    id: "chinaunicom",
+    nameCN: "中国联通", nameEN: "China Unicom",
+    industry: "电信",
+    categories: ["电信", "云计算"],
+    website: "https://www.chinaunicom.com",
+    careerPage: "https://zglt.iguopin.com",
+    careerCampus: "https://campus.chinaunicom.com",
+    positions: ["软件开发", "通信工程师", "云计算工程师", "网络安全", "数据分析", "产品经理"],
+    description: "中国三大电信运营商之一，积极推进数字化转型和5G建设",
+    fortuneRank: 9,
+    tags: ["央企", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "广州", "成都", "各省会城市"]
+  },
+  {
+    id: "fiberhome",
+    nameCN: "烽火通信", nameEN: "FiberHome",
+    industry: "电信",
+    categories: ["电信", "硬件"],
+    website: "https://www.fiberhome.com",
+    careerPage: "https://zhaopin.fiberhome.com",
+    careerCampus: "https://campus.fiberhome.com",
+    positions: ["嵌入式开发", "通信协议工程师", "软件开发", "FPGA工程师", "光学工程师"],
+    description: "中国领先的光通信设备制造商，在光纤通信领域拥有核心技术",
+    fortuneRank: 210,
+    tags: ["国企", "武汉"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["武汉", "南京", "成都"]
+  },
+  // ============================================================
+  // 四、硬件与消费电子（11家）
+  // ============================================================
+  {
+    id: "xiaomi",
+    nameCN: "小米", nameEN: "Xiaomi",
+    industry: "硬件",
+    categories: ["硬件", "互联网", "车企/智能驾驶"],
+    website: "https://www.mi.com",
+    careerPage: "https://hr.xiaomi.com",
+    careerCampus: "https://campus.xiaomi.com",
+    positions: ["软件开发", "嵌入式开发", "算法工程师", "产品经理", "硬件工程师", "AI工程师", "自动驾驶工程师"],
+    description: "全球领先的智能手机和智能硬件制造商，同时拓展智能汽车和AIoT生态",
+    fortuneRank: 22,
+    tags: ["头部大厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "武汉", "南京", "上海", "深圳"]
+  },
+  {
+    id: "lenovo",
+    nameCN: "联想", nameEN: "Lenovo",
+    industry: "硬件",
+    categories: ["硬件", "云计算"],
+    website: "https://www.lenovo.com",
+    careerPage: "https://jobs.lenovo.com",
+    careerCampus: "https://campus.lenovo.com.cn",
+    positions: ["软件开发", "嵌入式开发", "硬件工程师", "算法工程师", "产品经理", "AI工程师"],
+    description: "全球最大的PC制造商，在服务器、超算领域也有深厚积累",
+    fortuneRank: 16,
+    tags: ["大厂", "北京", "全球化"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "深圳", "武汉", "合肥", "上海"]
+  },
+  {
+    id: "dji",
+    nameCN: "大疆", nameEN: "DJI",
+    industry: "硬件",
+    categories: ["硬件", "AI/大数据"],
+    website: "https://www.dji.com",
+    careerPage: "https://we.dji.com",
+    careerCampus: "https://we.dji.com/cn/campus",
+    positions: ["嵌入式开发", "算法工程师", "软件开发", "硬件工程师", "机械设计", "计算机视觉"],
+    description: "全球领先的无人机和航拍技术公司，在机器人、AI视觉领域持续创新",
+    fortuneRank: 260,
+    tags: ["大厂", "深圳"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "上海", "北京", "西安"]
+  },
+  {
+    id: "boe",
+    nameCN: "京东方", nameEN: "BOE Technology",
+    industry: "硬件",
+    categories: ["硬件"],
+    website: "https://www.boe.com",
+    careerPage: "https://zhaopin.boe.com",
+    careerCampus: "https://campus.boe.com",
+    positions: ["软件开发", "嵌入式开发", "算法工程师", "硬件工程师", "AI工程师", "FPGA工程师"],
+    description: "全球领先的显示面板和物联网创新企业，出货量全球第一",
+    fortuneRank: 38,
+    tags: ["大厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "成都", "合肥", "重庆", "福州", "绵阳"]
+  },
+  {
+    id: "tcl",
+    nameCN: "TCL科技", nameEN: "TCL Technology",
+    industry: "硬件",
+    categories: ["硬件"],
+    website: "https://www.tcl.com",
+    careerPage: "https://zhaopin.tcl.com",
+    careerCampus: "https://campus.tcl.com",
+    positions: ["软件开发", "嵌入式开发", "算法工程师", "硬件工程师", "AI工程师", "产品经理"],
+    description: "全球领先的半导体显示和智能终端企业，业务覆盖全球160多个国家",
+    fortuneRank: 30,
+    tags: ["大厂", "惠州", "深圳"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "惠州", "武汉", "合肥"]
+  },
+  {
+    id: "hisense",
+    nameCN: "海信", nameEN: "Hisense",
+    industry: "硬件",
+    categories: ["硬件"],
+    website: "https://www.hisense.com",
+    careerPage: "https://zhaopin.hisense.com",
+    careerCampus: "https://campus.hisense.com",
+    positions: ["软件开发", "嵌入式开发", "算法工程师", "硬件工程师", "AI视觉工程师"],
+    description: "中国领先的家电和消费电子品牌，在智能电视、激光显示领域技术领先",
+    fortuneRank: 78,
+    tags: ["大厂", "青岛"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["青岛", "深圳", "武汉", "顺德"]
+  },
+  {
+    id: "gree",
+    nameCN: "格力电器", nameEN: "Gree Electric",
+    industry: "硬件",
+    categories: ["硬件"],
+    website: "https://www.gree.com",
+    careerPage: "https://recruitment.gree.com",
+    careerCampus: "https://campus.gree.com",
+    positions: ["嵌入式开发", "软件开发", "算法工程师", "硬件工程师", "物联网工程师"],
+    description: "全球领先的空调和家电制造企业，在工业机器人和智能装备领域也有布局",
+    fortuneRank: 55,
+    tags: ["大厂", "珠海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["珠海", "长沙", "郑州", "武汉"]
+  },
+  {
+    id: "haier",
+    nameCN: "海尔智家", nameEN: "Haier Smart Home",
+    industry: "硬件",
+    categories: ["硬件", "物联网"],
+    website: "https://www.haier.com",
+    careerPage: "https://maker.haier.net",
+    careerCampus: "https://campus.haier.net",
+    positions: ["软件开发", "嵌入式开发", "物联网工程师", "算法工程师", "产品经理", "AI工程师"],
+    description: "全球领先的美好生活和数字化转型解决方案提供商",
+    fortuneRank: 52,
+    tags: ["大厂", "青岛"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["青岛", "北京", "上海", "杭州"]
+  },
+  {
+    id: "transsion",
+    nameCN: "传音控股", nameEN: "Transsion Holdings",
+    industry: "硬件",
+    categories: ["硬件", "互联网"],
+    website: "https://www.transsion.com",
+    careerPage: "https://zhaopin.transsion.com",
+    careerCampus: "https://campus.transsion.com",
+    positions: ["软件开发", "嵌入式开发", "算法工程师", "Android开发", "产品经理", "AI工程师"],
+    description: "非洲手机市场占有率第一的智能终端和移动互联服务提供商",
+    fortuneRank: 130,
+    tags: ["大厂", "深圳"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "上海", "重庆"]
+  },
+  {
+    id: "oppo",
+    nameCN: "OPPO", nameEN: "OPPO",
+    industry: "硬件",
+    categories: ["硬件", "互联网"],
+    website: "https://www.oppo.com",
+    careerPage: "https://careers.oppo.com",
+    careerCampus: "https://campus.oppo.com",
+    positions: ["软件开发", "嵌入式开发", "算法工程师", "Android开发", "硬件工程师", "AI工程师"],
+    description: "全球领先的智能手机制造商，在影像技术和快充领域持续创新",
+    fortuneRank: 72,
+    tags: ["大厂", "深圳", "东莞"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "东莞", "上海", "北京", "成都"]
+  },
+  {
+    id: "vivo",
+    nameCN: "vivo", nameEN: "vivo",
+    industry: "硬件",
+    categories: ["硬件", "互联网"],
+    website: "https://www.vivo.com",
+    careerPage: "https://hr.vivo.com",
+    careerCampus: "https://campus.vivo.com",
+    positions: ["软件开发", "嵌入式开发", "算法工程师", "Android开发", "硬件工程师", "AI工程师"],
+    description: "全球领先的智能手机品牌，在影像、设计、性能方面持续突破",
+    fortuneRank: 80,
+    tags: ["大厂", "东莞", "深圳"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["东莞", "深圳", "杭州", "南京", "北京"]
+  },
+  // ============================================================
+  // 五、AI与大数据（7家）
+  // ============================================================
+  {
+    id: "iflytek",
+    nameCN: "科大讯飞", nameEN: "iFlytek",
+    industry: "AI/大数据",
+    categories: ["AI/大数据", "互联网"],
+    website: "https://www.iflytek.com",
+    careerPage: "https://campus.iflytek.com",
+    careerCampus: "https://campus.iflytek.com",
+    positions: ["算法工程师", "NLP工程师", "语音识别工程师", "软件开发", "AI研究员", "产品经理"],
+    description: "中国领先的人工智能企业，在语音识别、自然语言处理领域拥有全球领先技术",
+    fortuneRank: 175,
+    tags: ["AI龙头", "合肥"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["合肥", "北京", "上海", "广州", "成都", "武汉"]
+  },
+  {
+    id: "sensetime",
+    nameCN: "商汤科技", nameEN: "SenseTime",
+    industry: "AI/大数据",
+    categories: ["AI/大数据"],
+    website: "https://www.sensetime.com",
+    careerPage: "https://www.sensetime.com/cn/careers",
+    careerCampus: "https://campus.sensetime.com",
+    positions: ["算法工程师", "计算机视觉工程师", "AI研究员", "深度学习工程师", "软件开发", "GPU工程师"],
+    description: "全球领先的人工智能平台公司，在计算机视觉和深度学习领域拥有核心技术",
+    fortuneRank: 290,
+    tags: ["AI大厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "深圳", "香港"]
+  },
+  {
+    id: "megvii",
+    nameCN: "旷视科技", nameEN: "Megvii (Face++)",
+    industry: "AI/大数据",
+    categories: ["AI/大数据", "物联网"],
+    website: "https://www.megvii.com",
+    careerPage: "https://hr.megvii.com",
+    careerCampus: "https://campus.megvii.com",
+    positions: ["算法工程师", "计算机视觉工程师", "AI研究员", "软件开发", "深度学习工程师", "产品经理"],
+    description: "中国领先的AIoT产品和解决方案提供商，在AI视觉领域深耕",
+    fortuneRank: 380,
+    tags: ["AI大厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "南京"]
+  },
+  {
+    id: "4paradigm",
+    nameCN: "第四范式", nameEN: "4Paradigm",
+    industry: "AI/大数据",
+    categories: ["AI/大数据", "企业软件/云"],
+    website: "https://www.4paradigm.com",
+    careerPage: "https://zhaopin.4paradigm.com",
+    careerCampus: "https://campus.4paradigm.com",
+    positions: ["算法工程师", "机器学习工程师", "软件开发", "AI研究员", "数据工程师", "产品经理"],
+    description: "中国领先的企业级AI平台公司，致力于AI决策技术的商业化落地",
+    fortuneRank: 420,
+    tags: ["AI中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳"]
+  },
+  {
+    id: "cambricon",
+    nameCN: "寒武纪", nameEN: "Cambricon Technologies",
+    industry: "AI/大数据",
+    categories: ["AI/大数据", "硬件"],
+    website: "https://www.cambricon.com",
+    careerPage: "https://zhaopin.cambricon.com",
+    careerCampus: "https://campus.cambricon.com",
+    positions: ["芯片设计工程师", "AI框架开发", "编译器开发", "算法工程师", "深度学习工程师"],
+    description: "中国领先的AI芯片设计公司，专注于智能处理器IP和芯片产品",
+    fortuneRank: 450,
+    tags: ["芯片", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "合肥"]
+  },
+  {
+    id: "horizon",
+    nameCN: "地平线", nameEN: "Horizon Robotics",
+    industry: "AI/大数据",
+    categories: ["AI/大数据", "车企/智能驾驶", "硬件"],
+    website: "https://www.horizon.ai",
+    careerPage: "https://we.horizon.ai",
+    careerCampus: "https://campus.horizon.ai",
+    positions: ["算法工程师", "自动驾驶工程师", "嵌入式开发", "AI芯片设计", "计算机视觉工程师"],
+    description: "中国领先的边缘AI芯片和算法公司，聚焦智能驾驶和AIoT",
+    fortuneRank: 470,
+    tags: ["AI中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "南京", "深圳"]
+  },
+  {
+    id: "cloudwalk",
+    nameCN: "云从科技", nameEN: "CloudWalk Technology",
+    industry: "AI/大数据",
+    categories: ["AI/大数据"],
+    website: "https://www.cloudwalk.com",
+    careerPage: "https://zhaopin.cloudwalk.com",
+    careerCampus: "https://campus.cloudwalk.com",
+    positions: ["算法工程师", "计算机视觉工程师", "软件开发", "AI研究员", "产品经理"],
+    description: "中国领先的人机协同AI平台企业，在金融、安防、交通领域广泛落地",
+    fortuneRank: 490,
+    tags: ["AI中厂", "广州"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["广州", "上海", "重庆", "北京"]
+  },
+  // ============================================================
+  // 六、游戏（8家）
+  // ============================================================
+  {
+    id: "mihoyo",
+    nameCN: "米哈游", nameEN: "miHoYo",
+    industry: "游戏",
+    categories: ["游戏", "互联网"],
+    website: "https://www.mihoyo.com",
+    careerPage: "https://careers.mihoyo.com",
+    careerCampus: "https://campus.mihoyo.com",
+    positions: ["游戏开发", "后端开发", "前端开发", "游戏引擎开发", "技术美术", "算法工程师"],
+    description: "全球领先的游戏公司，旗下拥有《原神》《崩坏》系列等全球热门游戏",
+    fortuneRank: 180,
+    tags: ["游戏大厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "深圳", "杭州"]
+  },
+  {
+    id: "perfworld",
+    nameCN: "完美世界", nameEN: "Perfect World",
+    industry: "游戏",
+    categories: ["游戏", "媒体/社区"],
+    website: "https://www.pwrd.com",
+    careerPage: "https://jobs.pwrd.com",
+    careerCampus: "https://campus.pwrd.com",
+    positions: ["游戏开发", "后端开发", "游戏引擎开发", "技术美术", "客户端开发", "游戏策划"],
+    description: "中国领先的游戏开发公司，拥有《完美世界》《CS:GO》(中国区)等知名产品",
+    fortuneRank: 330,
+    tags: ["游戏大厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "成都"]
+  },
+  {
+    id: "giant",
+    nameCN: "巨人网络", nameEN: "Giant Interactive",
+    industry: "游戏",
+    categories: ["游戏"],
+    website: "https://www.ztgame.com",
+    careerPage: "https://hr.ztgame.com",
+    careerCampus: "https://campus.ztgame.com",
+    positions: ["游戏开发", "后端开发", "游戏引擎开发", "技术美术", "客户端开发", "算法工程师"],
+    description: "中国知名游戏公司，以《征途》系列和《球球大作战》为代表作",
+    fortuneRank: 360,
+    tags: ["游戏中厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海"]
+  },
+  {
+    id: "lilith",
+    nameCN: "莉莉丝游戏", nameEN: "Lilith Games",
+    industry: "游戏",
+    categories: ["游戏"],
+    website: "https://www.lilith.com",
+    careerPage: "https://jobs.lilith.com",
+    careerCampus: "https://campus.lilith.com",
+    positions: ["游戏开发", "后端开发", "游戏引擎开发", "技术美术", "客户端开发", "游戏策划"],
+    description: "中国领先的游戏公司，以《剑与远征》《万国觉醒》等策略游戏闻名全球",
+    fortuneRank: 400,
+    tags: ["游戏中厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海"]
+  },
+  {
+    id: "hypergryph",
+    nameCN: "鹰角网络", nameEN: "Hypergryph",
+    industry: "游戏",
+    categories: ["游戏"],
+    website: "https://www.hypergryph.com",
+    careerPage: "https://campus.hypergryph.com",
+    careerCampus: "https://campus.hypergryph.com",
+    positions: ["游戏开发", "后端开发", "Unity开发", "技术美术", "客户端开发", "游戏策划"],
+    description: "以《明日方舟》闻名的游戏公司，专注于高品质二次元游戏研发",
+    fortuneRank: 480,
+    tags: ["游戏新锐", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海"]
+  },
+  {
+    id: "kurogames",
+    nameCN: "库洛游戏", nameEN: "Kuro Games",
+    industry: "游戏",
+    categories: ["游戏"],
+    website: "https://www.kurogames.com",
+    careerPage: "https://zhaopin.kurogames.com",
+    careerCampus: "https://campus.kurogames.com",
+    positions: ["游戏开发", "后端开发", "Unity开发", "技术美术", "客户端开发", "游戏策划"],
+    description: "以《战双帕弥什》《鸣潮》闻名的二次元游戏公司",
+    fortuneRank: 500,
+    tags: ["游戏新锐", "广州"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["广州"]
+  },
+  {
+    id: "netease-games",
+    nameCN: "网易游戏", nameEN: "NetEase Games",
+    industry: "游戏",
+    categories: ["游戏"],
+    website: "https://game.163.com",
+    careerPage: "https://hr.163.com/job.html",
+    careerCampus: "https://campus.163.com",
+    positions: ["游戏开发", "后端开发", "游戏引擎开发", "技术美术", "客户端开发", "游戏策划", "AI工程师"],
+    description: "中国顶尖的游戏开发和发行商，拥有《梦幻西游》《永劫无间》《蛋仔派对》等热门游戏",
+    fortuneRank: 48,
+    tags: ["游戏大厂", "广州", "杭州"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["广州", "杭州", "上海"]
+  },
+  {
+    id: "tencent-games",
+    nameCN: "腾讯游戏", nameEN: "Tencent Games",
+    industry: "游戏",
+    categories: ["游戏"],
+    website: "https://game.qq.com",
+    careerPage: "https://careers.tencent.com",
+    careerCampus: "https://join.qq.com",
+    positions: ["游戏开发", "游戏引擎开发", "后端开发", "技术美术", "客户端开发", "AI工程师"],
+    description: "全球最大的游戏公司，拥有《王者荣耀》《英雄联盟》《和平精英》等现象级产品",
+    fortuneRank: 5,
+    tags: ["头部大厂", "深圳"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "上海", "北京", "成都"]
+  },
+  // ============================================================
+  // 七、金融科技与银行IT（8家）
+  // ============================================================
+  {
+    id: "antgroup",
+    nameCN: "蚂蚁集团", nameEN: "Ant Group",
+    industry: "金融科技",
+    categories: ["金融科技", "互联网"],
+    website: "https://www.antgroup.com",
+    careerPage: "https://talent.antgroup.com",
+    careerCampus: "https://campus.antgroup.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据工程师", "安全工程师", "区块链工程师"],
+    description: "全球领先的金融科技开放平台，旗下拥有支付宝、余额宝、花呗等产品",
+    fortuneRank: 25,
+    tags: ["头部大厂", "杭州", "阿里系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["杭州", "上海", "北京", "深圳", "成都"]
+  },
+  {
+    id: "unionpay",
+    nameCN: "中国银联", nameEN: "China UnionPay",
+    industry: "金融科技",
+    categories: ["金融科技", "银行/金融"],
+    website: "https://www.unionpay.com",
+    careerPage: "https://campus.unionpay.com",
+    careerCampus: "https://campus.unionpay.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "安全工程师", "数据工程师", "系统架构师"],
+    description: "中国银行卡联合组织，全球发卡量和交易量最大的卡组织之一",
+    fortuneRank: 50,
+    tags: ["国企", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京"]
+  },
+  {
+    id: "icbc",
+    nameCN: "工商银行", nameEN: "ICBC",
+    industry: "银行/金融",
+    categories: ["银行/金融"],
+    website: "https://www.icbc.com.cn",
+    careerPage: "https://job.icbc.com.cn",
+    careerCampus: "https://campus.icbc.com.cn",
+    positions: ["软件开发", "数据分析", "系统运维", "网络安全", "AI工程师", "云计算工程师"],
+    description: "全球最大的商业银行，拥有庞大的金融科技团队和数字化平台",
+    fortuneRank: 4,
+    tags: ["国有银行", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "广州", "成都", "杭州", "各省会城市"]
+  },
+  {
+    id: "ccb",
+    nameCN: "建设银行", nameEN: "China Construction Bank",
+    industry: "银行/金融",
+    categories: ["银行/金融"],
+    website: "https://www.ccb.com",
+    careerPage: "https://job.ccb.com",
+    careerCampus: "https://campus.ccb.com",
+    positions: ["软件开发", "数据分析", "系统运维", "网络安全", "AI工程师", "云计算工程师"],
+    description: "中国第二大商业银行，建信金科是国内领先的银行科技子公司",
+    fortuneRank: 6,
+    tags: ["国有银行", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "武汉", "成都"]
+  },
+  {
+    id: "cmb",
+    nameCN: "招商银行", nameEN: "China Merchants Bank",
+    industry: "银行/金融",
+    categories: ["银行/金融"],
+    website: "https://www.cmbchina.com",
+    careerPage: "https://career.cmbchina.com",
+    careerCampus: "https://campus.cmbchina.com",
+    positions: ["软件开发", "数据分析", "AI工程师", "云计算工程师", "产品经理", "网络安全"],
+    description: "中国领先的股份制商业银行，以金融科技创新著称，招商银行APP为行业标杆",
+    fortuneRank: 14,
+    tags: ["股份制银行", "深圳"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "上海", "杭州", "成都"]
+  },
+  {
+    id: "boc",
+    nameCN: "中国银行", nameEN: "Bank of China",
+    industry: "银行/金融",
+    categories: ["银行/金融"],
+    website: "https://www.boc.cn",
+    careerPage: "https://campus.chinahr.com/special/boc",
+    careerCampus: "https://campus.chinahr.com/special/boc",
+    positions: ["软件开发", "数据分析", "系统运维", "网络安全", "AI工程师"],
+    description: "中国国际化程度最高的商业银行，中银金科布局全球金融科技",
+    fortuneRank: 7,
+    tags: ["国有银行", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "成都", "西安"]
+  },
+  {
+    id: "abc",
+    nameCN: "农业银行", nameEN: "Agricultural Bank of China",
+    industry: "银行/金融",
+    categories: ["银行/金融"],
+    website: "https://www.abchina.com",
+    careerPage: "https://career.abchina.com",
+    careerCampus: "https://campus.abchina.com",
+    positions: ["软件开发", "数据分析", "系统运维", "网络安全", "AI工程师"],
+    description: "中国四大国有商业银行之一，农银金科在农业农村数字化方面优势明显",
+    fortuneRank: 10,
+    tags: ["国有银行", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "成都", "武汉"]
+  },
+  {
+    id: "bankcomm",
+    nameCN: "交通银行", nameEN: "Bank of Communications",
+    industry: "银行/金融",
+    categories: ["银行/金融"],
+    website: "https://www.bankcomm.com",
+    careerPage: "https://job.bankcomm.com",
+    careerCampus: "https://campus.bankcomm.com",
+    positions: ["软件开发", "数据分析", "AI工程师", "云计算工程师", "网络安全"],
+    description: "中国五大国有商业银行之一，交银金科推动数字化转型",
+    fortuneRank: 24,
+    tags: ["国有银行", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "深圳"]
+  },
+  // ============================================================
+  // 八、智能汽车与新能源（6家）
+  // ============================================================
+  {
+    id: "byd",
+    nameCN: "比亚迪", nameEN: "BYD",
+    industry: "车企/智能驾驶",
+    categories: ["车企/智能驾驶", "硬件"],
+    website: "https://www.byd.com",
+    careerPage: "https://job.byd.com",
+    careerCampus: "https://campus.byd.com",
+    positions: ["自动驾驶工程师", "嵌入式开发", "软件开发", "算法工程师", "电池软件工程师", "AI工程师"],
+    description: "全球领先的新能源汽车制造商，在电池、芯片、智能驾驶领域全面布局",
+    fortuneRank: 11,
+    tags: ["头部大厂", "深圳", "新能源"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "西安", "长沙", "上海", "惠州"]
+  },
+  {
+    id: "nio",
+    nameCN: "蔚来", nameEN: "NIO",
+    industry: "车企/智能驾驶",
+    categories: ["车企/智能驾驶", "互联网"],
+    website: "https://www.nio.com",
+    careerPage: "https://campus.nio.com",
+    careerCampus: "https://campus.nio.com",
+    positions: ["自动驾驶工程师", "软件开发", "算法工程师", "嵌入式开发", "云计算工程师", "AI工程师"],
+    description: "中国领先的高端智能电动汽车品牌，自研自动驾驶和智能座舱系统",
+    fortuneRank: 150,
+    tags: ["新势力", "上海", "合肥"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "合肥", "北京", "深圳"]
+  },
+  {
+    id: "xpeng",
+    nameCN: "小鹏汽车", nameEN: "XPeng Motors",
+    industry: "车企/智能驾驶",
+    categories: ["车企/智能驾驶", "AI/大数据"],
+    website: "https://www.xiaopeng.com",
+    careerPage: "https://campus.xiaopeng.com",
+    careerCampus: "https://campus.xiaopeng.com",
+    positions: ["自动驾驶工程师", "算法工程师", "软件开发", "AI工程师", "嵌入式开发", "产品经理"],
+    description: "中国领先的智能电动汽车公司，XNGP智驾系统行业领先",
+    fortuneRank: 200,
+    tags: ["新势力", "广州"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["广州", "北京", "上海", "深圳"]
+  },
+  {
+    id: "liauto",
+    nameCN: "理想汽车", nameEN: "Li Auto",
+    industry: "车企/智能驾驶",
+    categories: ["车企/智能驾驶", "AI/大数据"],
+    website: "https://www.lixiang.com",
+    careerPage: "https://www.lixiang.com/employ",
+    careerCampus: "https://campus.lixiang.com",
+    positions: ["自动驾驶工程师", "算法工程师", "软件开发", "嵌入式开发", "AI工程师", "产品经理"],
+    description: "中国领先的新能源汽车制造商，以理想ONE/L系列增程式电动车著称",
+    fortuneRank: 135,
+    tags: ["新势力", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "常州"]
+  },
+  {
+    id: "catl",
+    nameCN: "宁德时代", nameEN: "CATL",
+    industry: "车企/智能驾驶",
+    categories: ["车企/智能驾驶", "硬件"],
+    website: "https://www.catl.com",
+    careerPage: "https://catl.zhiye.com",
+    careerCampus: "https://catl.zhiye.com/campus",
+    positions: ["嵌入式开发", "软件开发", "算法工程师", "BMS软件工程师", "AI工程师", "数据分析"],
+    description: "全球领先的新能源电池制造商，电池管理系统(BMS)软件开发是核心方向",
+    fortuneRank: 19,
+    tags: ["头部大厂", "宁德", "新能源"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["宁德", "上海", "厦门", "溧阳"]
+  },
+  {
+    id: "geely",
+    nameCN: "吉利汽车", nameEN: "Geely Auto",
+    industry: "车企/智能驾驶",
+    categories: ["车企/智能驾驶"],
+    website: "https://www.geely.com",
+    careerPage: "https://campus.geely.com",
+    careerCampus: "https://campus.geely.com",
+    positions: ["自动驾驶工程师", "软件开发", "嵌入式开发", "算法工程师", "智能座舱开发"],
+    description: "中国领先的汽车制造集团，旗下拥有吉利、领克、极氪、沃尔沃等品牌",
+    fortuneRank: 27,
+    tags: ["大厂", "杭州"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["杭州", "宁波", "上海"]
+  },
+  // ============================================================
+  // 九、企业软件与云计算（10家）
+  // ============================================================
+  {
+    id: "kingdee",
+    nameCN: "金蝶国际", nameEN: "Kingdee International",
+    industry: "企业软件/云",
+    categories: ["企业软件/云"],
+    website: "https://www.kingdee.com",
+    careerPage: "https://zhaopin.kingdee.com",
+    careerCampus: "https://campus.kingdee.com",
+    positions: ["后端开发", "前端开发", "云计算工程师", "ERP开发", "产品经理", "Java开发"],
+    description: "中国领先的企业管理软件和云服务提供商，金蝶云·苍穹是核心PaaS平台",
+    fortuneRank: 240,
+    tags: ["中厂", "深圳"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "北京", "上海", "长沙"]
+  },
+  {
+    id: "yonyou",
+    nameCN: "用友网络", nameEN: "Yonyou Network",
+    industry: "企业软件/云",
+    categories: ["企业软件/云"],
+    website: "https://www.yonyou.com",
+    careerPage: "https://zhaopin.yonyou.com",
+    careerCampus: "https://campus.yonyou.com",
+    positions: ["后端开发", "前端开发", "云计算工程师", "Java开发", "产品经理", "ERP实施顾问"],
+    description: "中国最大的企业云服务和软件提供商，用友BIP是旗舰云平台",
+    fortuneRank: 200,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "厦门", "南昌"]
+  },
+  {
+    id: "sangfor",
+    nameCN: "深信服", nameEN: "Sangfor Technologies",
+    industry: "企业软件/云",
+    categories: ["企业软件/云", "电信"],
+    website: "https://www.sangfor.com.cn",
+    careerPage: "https://hr.sangfor.com",
+    careerCampus: "https://campus.sangfor.com",
+    positions: ["后端开发", "网络安全工程师", "云计算工程师", "算法工程师", "C++开发", "测试开发"],
+    description: "中国领先的网络安全和云计算解决方案提供商",
+    fortuneRank: 310,
+    tags: ["中厂", "深圳"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "北京", "长沙", "南京"]
+  },
+  {
+    id: "inspur",
+    nameCN: "浪潮信息", nameEN: "Inspur Electronic Information",
+    industry: "企业软件/云",
+    categories: ["企业软件/云", "硬件", "AI/大数据"],
+    website: "https://www.inspur.com",
+    careerPage: "https://career.inspur.com",
+    careerCampus: "https://campus.inspur.com",
+    positions: ["后端开发", "云计算工程师", "AI工程师", "嵌入式开发", "硬件工程师", "Java开发"],
+    description: "中国领先的云计算、大数据和AI服务器解决方案提供商",
+    fortuneRank: 100,
+    tags: ["国企", "济南", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["济南", "北京", "郑州", "成都"]
+  },
+  {
+    id: "alicloud",
+    nameCN: "阿里云", nameEN: "Alibaba Cloud",
+    industry: "企业软件/云",
+    categories: ["企业软件/云", "云计算", "AI/大数据"],
+    website: "https://www.aliyun.com",
+    careerPage: "https://talent.alibaba.com",
+    careerCampus: "https://campus.alibaba.com",
+    positions: ["云计算工程师", "后端开发", "算法工程师", "系统架构师", "安全工程师", "数据库工程师"],
+    description: "亚太地区最大的云计算服务提供商，市场份额中国第一",
+    fortuneRank: 23,
+    tags: ["头部大厂", "杭州", "阿里系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["杭州", "北京", "深圳", "上海", "成都"]
+  },
+  {
+    id: "huaweicloud",
+    nameCN: "华为云", nameEN: "Huawei Cloud",
+    industry: "企业软件/云",
+    categories: ["企业软件/云", "云计算", "AI/大数据"],
+    website: "https://www.huaweicloud.com",
+    careerPage: "https://career.huawei.com",
+    careerCampus: "https://career.huawei.com/campus",
+    positions: ["云计算工程师", "后端开发", "算法工程师", "系统架构师", "安全工程师", "AI工程师"],
+    description: "华为旗下云计算品牌，国内市场份额增长最快的云服务商之一",
+    fortuneRank: 1,
+    tags: ["头部大厂", "深圳", "华为系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "北京", "杭州", "成都", "西安", "东莞"]
+  },
+  {
+    id: "tencentcloud",
+    nameCN: "腾讯云", nameEN: "Tencent Cloud",
+    industry: "企业软件/云",
+    categories: ["企业软件/云", "云计算"],
+    website: "https://cloud.tencent.com",
+    careerPage: "https://careers.tencent.com",
+    careerCampus: "https://join.qq.com",
+    positions: ["云计算工程师", "后端开发", "算法工程师", "系统架构师", "安全工程师", "数据库工程师"],
+    description: "腾讯旗下云计算品牌，在游戏云、音视频云领域领先",
+    fortuneRank: 5,
+    tags: ["头部大厂", "深圳", "腾讯系"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "北京", "上海", "广州", "成都"]
+  },
+  {
+    id: "weimob",
+    nameCN: "微盟集团", nameEN: "Weimob",
+    industry: "企业软件/云",
+    categories: ["企业软件/云", "互联网"],
+    website: "https://www.weimob.com",
+    careerPage: "https://zhaopin.weimob.com",
+    careerCampus: "https://campus.weimob.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "Java开发", "数据分析"],
+    description: "中国领先的智慧商业解决方案提供商，助力企业数字化转型",
+    fortuneRank: 350,
+    tags: ["中厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "广州"]
+  },
+  {
+    id: "chinasoft",
+    nameCN: "中软国际", nameEN: "Chinasoft International",
+    industry: "企业软件/云",
+    categories: ["企业软件/云"],
+    website: "https://www.chinasofti.com",
+    careerPage: "https://zhaopin.chinasofti.com",
+    careerCampus: "https://campus.chinasofti.com",
+    positions: ["后端开发", "前端开发", "Java开发", "测试开发", "产品经理", "数据分析"],
+    description: "中国领先的IT服务和解决方案提供商，服务全球500强企业",
+    fortuneRank: 160,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "深圳", "上海", "武汉", "西安", "南京"]
+  },
+  {
+    id: "hundsun",
+    nameCN: "恒生电子", nameEN: "Hundsun Technologies",
+    industry: "金融科技",
+    categories: ["金融科技", "企业软件/云"],
+    website: "https://www.hundsun.com",
+    careerPage: "https://campus.hundsun.com",
+    careerCampus: "https://campus.hundsun.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "Java开发", "金融IT开发", "产品经理"],
+    description: "中国领先的金融软件和网络服务提供商，服务证券、基金、银行等金融机构",
+    fortuneRank: 270,
+    tags: ["中厂", "杭州"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["杭州", "北京", "上海", "深圳"]
+  },
+  // ============================================================
+  // 十、更多互联网与金融科技（4家）
+  // ============================================================
+  {
+    id: "guotai",
+    nameCN: "国泰君安", nameEN: "Guotai Junan Securities",
+    industry: "金融科技",
+    categories: ["金融科技", "银行/金融"],
+    website: "https://www.gtja.com",
+    careerPage: "https://hr.gtja.com",
+    careerCampus: "https://campus.gtja.com",
+    positions: ["后端开发", "算法工程师", "量化开发", "数据分析", "系统运维", "产品经理"],
+    description: "中国领先的综合性证券公司，在金融科技和量化交易方面持续投入",
+    fortuneRank: 65,
+    tags: ["券商", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "深圳"]
+  },
+  {
+    id: "eastmoney",
+    nameCN: "东方财富", nameEN: "East Money",
+    industry: "金融科技",
+    categories: ["金融科技", "互联网"],
+    website: "https://www.eastmoney.com",
+    careerPage: "https://zhaopin.eastmoney.com",
+    careerCampus: "https://campus.eastmoney.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "数据工程师", "客户端开发", "产品经理"],
+    description: "中国领先的互联网财经信息平台，旗下天天基金网和东方财富证券",
+    fortuneRank: 120,
+    tags: ["大厂", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "南京"]
+  },
+  {
+    id: "bosszhipin",
+    nameCN: "BOSS直聘", nameEN: "BOSS Zhipin (Kanzhun)",
+    industry: "互联网",
+    categories: ["互联网"],
+    website: "https://www.zhipin.com",
+    careerPage: "https://www.zhipin.com/gongsi",
+    careerCampus: "https://campus.zhipin.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据工程师", "客户端开发"],
+    description: "中国最大的在线招聘平台之一，以直聊模式革新招聘体验",
+    fortuneRank: 300,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "成都"]
+  },
+  {
+    id: "liepin",
+    nameCN: "同道猎聘", nameEN: "Tongdao Liepin",
+    industry: "互联网",
+    categories: ["互联网"],
+    website: "https://www.liepin.com",
+    careerPage: "https://hr.liepin.com",
+    careerCampus: "https://campus.liepin.com",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "数据工程师"],
+    description: "中国领先的中高端人才招聘平台，覆盖互联网、金融、制造等行业",
+    fortuneRank: 390,
+    tags: ["中厂", "北京"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "广州"]
+  },
+  // ============================================================
+  // 十一、知名外企中国研发中心（24家）
+  // ============================================================
+  {
+    id: "apple",
+    nameCN: "苹果", nameEN: "Apple Inc.",
+    industry: "硬件",
+    categories: ["外企", "硬件", "互联网"],
+    website: "https://www.apple.com.cn",
+    careerPage: "https://www.apple.com.cn/careers/cn",
+    careerCampus: "https://www.apple.com.cn/careers/cn/students.html",
+    positions: ["软件开发", "算法工程师", "硬件工程师", "AI工程师", "产品设计", "测试开发"],
+    description: "全球最具价值的科技公司，在北京、上海、深圳设有研发中心",
+    fortuneRank: 17,
+    tags: ["外企", "硅谷", "全球化"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "苏州"]
+  },
+  {
+    id: "google",
+    nameCN: "谷歌", nameEN: "Google",
+    industry: "互联网",
+    categories: ["外企", "互联网", "AI/大数据", "云计算"],
+    website: "https://www.google.com",
+    careerPage: "https://careers.google.com",
+    careerCampus: "https://careers.google.com/students",
+    positions: ["软件开发", "算法工程师", "AI研究员", "云计算工程师", "前端开发", "产品经理"],
+    description: "全球领先的搜索引擎和AI公司，在北京、上海、深圳设有研发中心",
+    fortuneRank: 21,
+    tags: ["外企", "硅谷", "全球化"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳"]
+  },
+  {
+    id: "intel",
+    nameCN: "英特尔", nameEN: "Intel Corporation",
+    industry: "硬件",
+    categories: ["外企", "硬件", "AI/大数据"],
+    website: "https://www.intel.cn",
+    careerPage: "https://jobs.intel.cn",
+    careerCampus: "https://campus.intel.cn",
+    positions: ["芯片设计工程师", "嵌入式开发", "AI工程师", "软件开发", "FPGA工程师", "驱动开发"],
+    description: "全球最大的半导体芯片制造商，在北京、上海、深圳设有研发中心",
+    fortuneRank: 28,
+    tags: ["外企", "芯片", "硅谷"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "成都"]
+  },
+  {
+    id: "ibm",
+    nameCN: "IBM", nameEN: "IBM Corporation",
+    industry: "企业软件/云",
+    categories: ["外企", "企业软件/云", "AI/大数据", "云计算"],
+    website: "https://www.ibm.com/cn-zh",
+    careerPage: "https://www.ibm.com/cn-zh/careers",
+    careerCampus: "https://www.ibm.com/cn-zh/careers/entry-level-jobs",
+    positions: ["软件开发", "云计算工程师", "AI工程师", "数据工程师", "后端开发", "咨询顾问"],
+    description: "全球最大的信息技术和业务解决方案公司，在AI、云计算、量子计算领域持续投入",
+    fortuneRank: 33,
+    tags: ["外企", "百年老店"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "成都", "西安"]
+  },
+  {
+    id: "nvidia",
+    nameCN: "英伟达", nameEN: "NVIDIA",
+    industry: "硬件",
+    categories: ["外企", "硬件", "AI/大数据", "车企/智能驾驶"],
+    website: "https://www.nvidia.cn",
+    careerPage: "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite",
+    careerCampus: "https://nvidia.wd5.myworkdayjobs.com/University",
+    positions: ["AI工程师", "GPU架构师", "算法工程师", "自动驾驶工程师", "深度学习工程师", "CUDA开发"],
+    description: "全球领先的GPU和AI计算公司，在北京、上海、深圳设有研发中心",
+    fortuneRank: 36,
+    tags: ["外企", "AI龙头", "硅谷"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳"]
+  },
+  {
+    id: "amd",
+    nameCN: "超威半导体", nameEN: "AMD",
+    industry: "硬件",
+    categories: ["外企", "硬件"],
+    website: "https://www.amd.com/zh-cn",
+    careerPage: "https://www.amd.com/zh-cn/corporate/careers",
+    careerCampus: "https://www.amd.com/zh-cn/corporate/careers/university.html",
+    positions: ["芯片设计工程师", "GPU架构师", "软件开发", "算法工程师", "BIOS工程师", "驱动开发"],
+    description: "全球领先的CPU和GPU芯片设计公司，在上海设有大型研发中心",
+    fortuneRank: 62,
+    tags: ["外企", "芯片", "硅谷"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "苏州"]
+  },
+  {
+    id: "qualcomm",
+    nameCN: "高通", nameEN: "Qualcomm",
+    industry: "电信",
+    categories: ["外企", "电信", "硬件", "AI/大数据"],
+    website: "https://www.qualcomm.cn",
+    careerPage: "https://www.qualcomm.cn/company/careers",
+    careerCampus: "https://www.qualcomm.cn/company/careers/university-relations",
+    positions: ["通信协议工程师", "芯片设计工程师", "AI算法工程师", "嵌入式开发", "FPGA工程师", "驱动开发"],
+    description: "全球领先的无线通信技术和芯片公司，在北京、上海、深圳设有研发中心",
+    fortuneRank: 57,
+    tags: ["外企", "芯片", "通信"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "西安"]
+  },
+  {
+    id: "cisco",
+    nameCN: "思科", nameEN: "Cisco Systems",
+    industry: "电信",
+    categories: ["外企", "电信", "企业软件/云", "云计算"],
+    website: "https://www.cisco.com/c/zh_cn",
+    careerPage: "https://jobs.cisco.com",
+    careerCampus: "https://jobs.cisco.com/students",
+    positions: ["软件开发", "网络工程师", "云计算工程师", "后端开发", "Python开发", "安全工程师"],
+    description: "全球领先的网络设备和IT解决方案提供商，在中国拥有多个研发中心",
+    fortuneRank: 74,
+    tags: ["外企", "硅谷"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "杭州", "深圳"]
+  },
+  {
+    id: "oracle",
+    nameCN: "甲骨文", nameEN: "Oracle Corporation",
+    industry: "企业软件/云",
+    categories: ["外企", "企业软件/云", "云计算", "AI/大数据"],
+    website: "https://www.oracle.com/cn",
+    careerPage: "https://www.oracle.com/cn/careers",
+    careerCampus: "https://www.oracle.com/cn/careers/grad-students",
+    positions: ["Java开发", "云计算工程师", "数据库开发", "后端开发", "数据工程师", "产品经理"],
+    description: "全球最大的数据库和企业软件公司，在北京、上海、深圳、苏州设有研发中心",
+    fortuneRank: 39,
+    tags: ["外企", "数据库", "硅谷"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "苏州"]
+  },
+  {
+    id: "sap",
+    nameCN: "SAP", nameEN: "SAP SE",
+    industry: "企业软件/云",
+    categories: ["外企", "企业软件/云", "云计算"],
+    website: "https://www.sap.cn",
+    careerPage: "https://www.sap.cn/about/careers.html",
+    careerCampus: "https://www.sap.cn/about/careers/university.html",
+    positions: ["后端开发", "Java开发", "云计算工程师", "全栈开发", "产品经理", "数据工程师"],
+    description: "全球最大的企业管理和协同化商务解决方案提供商，在上海、成都等地设有研究院",
+    fortuneRank: 70,
+    tags: ["外企", "德国"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "成都", "深圳"]
+  },
+  {
+    id: "siemens",
+    nameCN: "西门子", nameEN: "Siemens AG",
+    industry: "硬件",
+    categories: ["外企", "硬件", "企业软件/云", "车企/智能驾驶"],
+    website: "https://www.siemens.com/cn",
+    careerPage: "https://www.siemens.com/cn/zh/company/jobs.html",
+    careerCampus: "https://www.siemens.com/cn/zh/company/jobs/university.html",
+    positions: ["嵌入式开发", "软件开发", "工业软件开发", "AI工程师", "物联网工程师", "自动化工程师"],
+    description: "全球领先的工业自动化和数字化企业，在北京、上海、成都设有研发中心",
+    fortuneRank: 53,
+    tags: ["外企", "德国", "工业4.0"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "成都", "深圳"]
+  },
+  {
+    id: "samsung",
+    nameCN: "三星", nameEN: "Samsung Electronics",
+    industry: "硬件",
+    categories: ["外企", "硬件", "AI/大数据"],
+    website: "https://www.samsung.com/cn",
+    careerPage: "https://www.samsung.com.cn/careers",
+    careerCampus: "https://campus.samsung.com.cn",
+    positions: ["软件开发", "嵌入式开发", "AI算法工程师", "Android开发", "芯片设计", "硬件工程师"],
+    description: "全球最大的消费电子和半导体公司之一，在北京、上海、深圳、天津设有研发中心",
+    fortuneRank: 29,
+    tags: ["外企", "韩国", "消费电子"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳", "天津"]
+  },
+  {
+    id: "tesla",
+    nameCN: "特斯拉", nameEN: "Tesla",
+    industry: "车企/智能驾驶",
+    categories: ["外企", "车企/智能驾驶", "AI/大数据"],
+    website: "https://www.tesla.cn",
+    careerPage: "https://www.tesla.cn/careers",
+    careerCampus: "https://www.tesla.cn/careers/university",
+    positions: ["自动驾驶工程师", "软件开发", "算法工程师", "嵌入式开发", "AI工程师", "电气工程师"],
+    description: "全球领先的电动汽车和新能源公司，上海超级工厂是海外最大生产基地",
+    fortuneRank: 31,
+    tags: ["外企", "新能源", "硅谷"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京"]
+  },
+  {
+    id: "sony",
+    nameCN: "索尼", nameEN: "Sony Group",
+    industry: "硬件",
+    categories: ["外企", "硬件", "游戏", "互联网"],
+    website: "https://www.sony.com.cn",
+    careerPage: "https://www.sony.com.cn/careers",
+    careerCampus: "https://www.sony.com.cn/careers/graduates.html",
+    positions: ["软件开发", "嵌入式开发", "游戏开发", "AI工程师", "硬件工程师", "图像处理工程师"],
+    description: "全球领先的电子、游戏和娱乐公司，在上海设有研发中心",
+    fortuneRank: 67,
+    tags: ["外企", "日本", "消费电子"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "深圳"]
+  },
+  {
+    id: "paypal",
+    nameCN: "PayPal", nameEN: "PayPal Holdings",
+    industry: "金融科技",
+    categories: ["外企", "金融科技", "互联网"],
+    website: "https://www.paypal.com/cn",
+    careerPage: "https://www.paypal.com/cn/webapps/mpp/jobs",
+    careerCampus: "https://www.paypal.com/us/webapps/mpp/jobs/students",
+    positions: ["后端开发", "前端开发", "Java开发", "数据工程师", "安全工程师", "算法工程师"],
+    description: "全球领先的在线支付和金融科技公司，在上海设有大型研发中心",
+    fortuneRank: 85,
+    tags: ["外企", "硅谷", "支付"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京"]
+  },
+  {
+    id: "bosch",
+    nameCN: "博世", nameEN: "Bosch Group",
+    industry: "车企/智能驾驶",
+    categories: ["外企", "车企/智能驾驶", "硬件", "企业软件/云"],
+    website: "https://www.bosch.com.cn",
+    careerPage: "https://www.bosch.com.cn/careers",
+    careerCampus: "https://www.bosch.com.cn/careers/students-and-graduates",
+    positions: ["嵌入式开发", "自动驾驶工程师", "软件开发", "AI工程师", "物联网工程师", "Java开发"],
+    description: "全球最大的汽车零部件制造商和工业技术公司，在上海、苏州、无锡设有研发中心",
+    fortuneRank: 44,
+    tags: ["外企", "德国", "汽车零部件"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "苏州", "无锡"]
+  },
+  {
+    id: "hp",
+    nameCN: "惠普", nameEN: "HP Inc.",
+    industry: "硬件",
+    categories: ["外企", "硬件", "企业软件/云"],
+    website: "https://www.hp.com/cn-zh",
+    careerPage: "https://jobs.hp.com/zh-cn",
+    careerCampus: "https://jobs.hp.com/zh-cn/jobs/college-students",
+    positions: ["软件开发", "硬件工程师", "测试开发", "数据工程师", "产品经理", "全栈开发"],
+    description: "全球领先的PC和打印设备制造商，在上海、北京、大连设有研发中心",
+    fortuneRank: 58,
+    tags: ["外企", "硬件"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "大连"]
+  },
+  {
+    id: "dell",
+    nameCN: "戴尔", nameEN: "Dell Technologies",
+    industry: "硬件",
+    categories: ["外企", "硬件", "企业软件/云", "云计算"],
+    website: "https://www.dell.com/zh-cn",
+    careerPage: "https://jobs.dell.com/zh-cn",
+    careerCampus: "https://jobs.dell.com/zh-cn/jobs/college-students",
+    positions: ["软件开发", "云计算工程师", "数据工程师", "测试开发", "产品经理", "AI工程师"],
+    description: "全球领先的IT解决方案和PC制造商，在上海、北京、厦门设有研发中心",
+    fortuneRank: 41,
+    tags: ["外企", "硬件"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["上海", "北京", "厦门"]
+  },
+  {
+    id: "asml",
+    nameCN: "阿斯麦", nameEN: "ASML Holding",
+    industry: "硬件",
+    categories: ["外企", "硬件"],
+    website: "https://www.asml.com/zh-cn",
+    careerPage: "https://www.asml.com/zh-cn/careers",
+    careerCampus: "https://www.asml.com/zh-cn/careers/students-and-graduates",
+    positions: ["软件开发", "算法工程师", "光学工程师", "嵌入式开发", "硬件工程师", "系统工程师"],
+    description: "全球领先的光刻机供应商，芯片制造的绝对龙头，在北京、上海、深圳设有研发中心",
+    fortuneRank: 88,
+    tags: ["外企", "芯片", "荷兰"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳"]
+  },
+  {
+    id: "ericsson",
+    nameCN: "爱立信", nameEN: "Ericsson",
+    industry: "电信",
+    categories: ["外企", "电信", "云计算"],
+    website: "https://www.ericsson.com/zh-cn",
+    careerPage: "https://www.ericsson.com/en/careers",
+    careerCampus: "https://www.ericsson.com/en/careers/students-and-graduates",
+    positions: ["通信协议工程师", "软件开发", "5G/6G研发", "云计算工程师", "嵌入式开发", "AI工程师"],
+    description: "全球领先的通信设备和技术提供商，在北京、上海、成都、大连设有研发中心",
+    fortuneRank: 92,
+    tags: ["外企", "瑞典", "通信"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "成都", "大连"]
+  },
+  {
+    id: "shopeecn",
+    nameCN: "Shopee中国", nameEN: "Shopee China (Sea Group)",
+    industry: "互联网",
+    categories: ["外企", "互联网", "电商"],
+    website: "https://www.shopee.cn",
+    careerPage: "https://careers.shopee.cn",
+    careerCampus: "https://campus.shopee.cn",
+    positions: ["后端开发", "前端开发", "算法工程师", "产品经理", "客户端开发", "数据分析"],
+    description: "东南亚电商Shopee在中国的研发中心，深圳和上海有大量技术岗位",
+    fortuneRank: 145,
+    tags: ["大厂", "深圳", "外企"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["深圳", "上海", "北京"]
+  },
+  {
+    id: "zoomcn",
+    nameCN: "Zoom中国", nameEN: "Zoom Video Communications",
+    industry: "互联网",
+    categories: ["外企", "互联网", "企业软件/云"],
+    website: "https://www.zoom.com.cn",
+    careerPage: "https://careers.zoom.us",
+    careerCampus: "https://careers.zoom.us/campus",
+    positions: ["后端开发", "前端开发", "音视频工程师", "算法工程师", "产品经理", "客户端开发"],
+    description: "全球领先的视频会议平台，在杭州、合肥、苏州设有研发中心",
+    fortuneRank: 250,
+    tags: ["外企", "杭州", "合肥"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["杭州", "合肥", "苏州"]
+  },
+  {
+    id: "microsoftcn",
+    nameCN: "微软中国", nameEN: "Microsoft China",
+    industry: "企业软件/云",
+    categories: ["外企", "企业软件/云", "AI/大数据", "云计算"],
+    website: "https://www.microsoft.com/zh-cn",
+    careerPage: "https://careers.microsoft.com",
+    careerCampus: "https://careers.microsoft.com/students",
+    positions: ["软件开发", "算法工程师", "AI研究员", "云计算工程师", "产品经理", "前端开发"],
+    description: "全球最大的软件公司，在北京、上海、苏州设有大型研发中心",
+    fortuneRank: 20,
+    tags: ["外企", "北京", "苏州"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "苏州"]
+  },
+  {
+    id: "amazoncn",
+    nameCN: "亚马逊中国", nameEN: "Amazon China",
+    industry: "互联网",
+    categories: ["外企", "互联网", "电商", "云计算"],
+    website: "https://www.amazon.cn",
+    careerPage: "https://www.amazon.jobs/zh",
+    careerCampus: "https://www.amazon.jobs/zh/teams/student-programs",
+    positions: ["软件开发", "算法工程师", "云计算工程师", "前端开发", "产品经理"],
+    description: "全球最大的电商和云计算公司，AWS在中国有大量技术岗位",
+    fortuneRank: 13,
+    tags: ["外企", "北京", "上海"],
+    hiring: true, hasCampusRecruit: true,
+    cities: ["北京", "上海", "深圳"]
+  }
+];
+
+// 分类标签列表（用于筛选按钮）
+var CATEGORIES = [
+  { key: "all", label: "全部" },
+  { key: "互联网", label: "互联网" },
+  { key: "电商", label: "电商" },
+  { key: "电信", label: "电信" },
+  { key: "硬件", label: "硬件" },
+  { key: "AI/大数据", label: "AI/大数据" },
+  { key: "游戏", label: "游戏" },
+  { key: "金融科技", label: "金融科技" },
+  { key: "银行/金融", label: "银行/金融" },
+  { key: "车企/智能驾驶", label: "车企" },
+  { key: "企业软件/云", label: "企业软件" },
+  { key: "云计算", label: "云计算" },
+  { key: "物联网", label: "物联网" },
+  { key: "媒体/社区", label: "媒体/社区" },
+  { key: "物流", label: "物流" },
+  { key: "外企", label: "外企" }
+];
+
+// 排序方式
+var SORT_METHODS = [
+  { key: "default", label: "默认排序" },
+  { key: "name", label: "按名称 A-Z" },
+  { key: "rank", label: "按排名" }
+];
+</script>
+<script>
+// ============================================================
+// 核心应用逻辑：搜索、筛选、排序、渲染、收藏夹管理
+// 采用 IIFE 模式隔离作用域，避免全局变量污染
+// ============================================================
+(function () {
+  'use strict';
+
+  // --- 应用状态：所有筛选条件的当前值 ---
+  var state = {
+    searchTerm: '',
+    activeCategory: 'all',
+    sortMethod: 'default',
+    campusOnly: false,
+    showFavoritesOnly: false
+  };
+
+  // --- DOM引用缓存：避免重复查询 ---
+  var searchInput   = document.getElementById('searchInput');
+  var searchClear   = document.getElementById('searchClear');
+  var categoryFilters = document.getElementById('categoryFilters');
+  var sortSelect    = document.getElementById('sortSelect');
+  var campusCheckbox = document.getElementById('campusOnly');
+  var favToggle     = document.getElementById('favToggle');
+  var favCount      = document.getElementById('favCount');
+  var cardGrid      = document.getElementById('cardGrid');
+  var emptyState    = document.getElementById('emptyState');
+  var resultsCount  = document.getElementById('resultsCount');
+  var backToTop     = document.getElementById('backToTop');
+
+  // ===================== 初始化入口 =====================
+
+  function init() {
+    renderCategoryPills();   // 渲染分类胶囊按钮
+    filterAndRender();       // 首次渲染全部公司
+    updateFavCount();        // 更新收藏夹徽章
+    bindEvents();            // 绑定用户交互事件
+  }
+
+  // ===================== 分类胶囊按钮 =====================
+
+  /** 根据 CATEGORIES 数组动态生成分类筛选按钮 */
+  function renderCategoryPills() {
+    var fragment = document.createDocumentFragment();
+    CATEGORIES.forEach(function (cat) {
+      var btn = document.createElement('button');
+      btn.className = 'category-pill' + (cat.key === 'all' ? ' active' : '');
+      btn.textContent = cat.label;
+      btn.dataset.category = cat.key;
+      fragment.appendChild(btn);
+    });
+    categoryFilters.appendChild(fragment);
+  }
+
+  // ===================== 筛选+排序+渲染 核心管线 =====================
+
+  /**
+   * 根据当前 state 对 COMPANIES 进行多轮过滤和排序，最终渲染
+   * 这是一个纯数据管线：分类过滤 → 校招过滤 → 收藏过滤 → 搜索 → 排序 → 渲染
+   */
+  function filterAndRender() {
+    var list = COMPANIES.slice(); // 浅拷贝，避免修改原数组
+
+    // 1. 分类筛选
+    if (state.activeCategory !== 'all') {
+      list = list.filter(function (c) {
+        return c.categories.indexOf(state.activeCategory) !== -1;
+      });
+    }
+
+    // 2. 仅看校招
+    if (state.campusOnly) {
+      list = list.filter(function (c) { return c.hasCampusRecruit; });
+    }
+
+    // 3. 仅看收藏
+    if (state.showFavoritesOnly) {
+      var favIds = getFavorites();
+      list = list.filter(function (c) { return favIds.indexOf(c.id) !== -1; });
+    }
+
+    // 4. 全文搜索：匹配公司名、职位、标签、城市、描述
+    if (state.searchTerm.trim()) {
+      var term = state.searchTerm.trim().toLowerCase();
+      list = list.filter(function (c) {
+        var haystack = [
+          c.nameCN, c.nameEN.toLowerCase(),
+          c.positions.join(' '), (c.tags || []).join(' '),
+          (c.cities || []).join(' '), c.description || ''
+        ].join(' ').toLowerCase();
+        return haystack.indexOf(term) !== -1;
+      });
+    }
+
+    // 5. 排序
+    if (state.sortMethod === 'name') {
+      list.sort(function (a, b) { return a.nameCN.localeCompare(b.nameCN, 'zh'); });
+    } else if (state.sortMethod === 'rank') {
+      list.sort(function (a, b) { return (a.fortuneRank || 999) - (b.fortuneRank || 999); });
+    }
+
+    renderCompanies(list);
+  }
+
+  // ===================== 渲染卡片网格 =====================
+
+  /**
+   * 将筛选后的公司列表渲染为卡片网格
+   * 使用 DocumentFragment 批量插入，减少 DOM 回流次数
+   */
+  function renderCompanies(list) {
+    cardGrid.innerHTML = '';
+
+    if (list.length === 0) {
+      cardGrid.style.display = 'none';
+      emptyState.style.display = 'block';
+      resultsCount.textContent = '找到 0 家公司';
+      return;
+    }
+
+    cardGrid.style.display = '';
+    emptyState.style.display = 'none';
+    resultsCount.textContent = '找到 ' + list.length + ' 家公司';
+
+    var fragment = document.createDocumentFragment();
+    list.forEach(function (company) {
+      fragment.appendChild(createCard(company));
+    });
+    cardGrid.appendChild(fragment);
+  }
+
+  // ===================== 单张卡片创建 =====================
+
+  /**
+   * 根据公司数据创建一张完整的卡片 DOM 元素
+   * 包含：收藏星标、公司头像、名称、行业、城市、职位标签、操作按钮
+   */
+  function createCard(company) {
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.id = company.id;
+
+    // ---- 收藏星标按钮 ----
+    var starBtn = document.createElement('button');
+    starBtn.className = 'card-star' + (isFavorite(company.id) ? ' favorited' : '');
+    starBtn.title = isFavorite(company.id) ? '取消收藏' : '添加收藏';
+    starBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+    starBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      toggleFavorite(company.id);
+      var nowFav = isFavorite(company.id);
+      starBtn.classList.toggle('favorited', nowFav);
+      starBtn.title = nowFav ? '取消收藏' : '添加收藏';
+      updateFavCount();
+
+      // 如果在收藏视图且取消了收藏，需要从视图中移除该卡片
+      if (state.showFavoritesOnly && !nowFav) {
+        filterAndRender();
+      }
+    });
+    card.appendChild(starBtn);
+
+    // ---- 卡片头部（头像 + 名称） ----
+    var header = document.createElement('div');
+    header.className = 'card-header';
+
+    var avatar = document.createElement('div');
+    avatar.className = 'card-avatar';
+    avatar.textContent = company.nameCN.charAt(0);
+    header.appendChild(avatar);
+
+    var nameGroup = document.createElement('div');
+    nameGroup.className = 'card-name-group';
+
+    var nameCN = document.createElement('div');
+    nameCN.className = 'card-name';
+    nameCN.textContent = company.nameCN;
+
+    var nameEN = document.createElement('div');
+    nameEN.className = 'card-name-en';
+    nameEN.textContent = company.nameEN;
+
+    var industry = document.createElement('span');
+    industry.className = 'card-industry';
+    industry.textContent = company.industry + (company.hiring ? ' · 招聘中' : '');
+
+    nameGroup.appendChild(nameCN);
+    nameGroup.appendChild(nameEN);
+    nameGroup.appendChild(industry);
+    header.appendChild(nameGroup);
+    card.appendChild(header);
+
+    // ---- 城市信息 ----
+    if (company.cities && company.cities.length > 0) {
+      var cities = document.createElement('div');
+      cities.className = 'card-cities';
+      cities.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+      cities.appendChild(document.createTextNode(formatCities(company.cities)));
+      card.appendChild(cities);
+    }
+
+    // ---- 招聘职位标签 ----
+    var positionsDiv = document.createElement('div');
+    positionsDiv.className = 'card-positions';
+    (company.positions || []).forEach(function (pos) {
+      var tag = document.createElement('span');
+      tag.className = 'position-tag';
+      tag.textContent = pos;
+      positionsDiv.appendChild(tag);
+    });
+    card.appendChild(positionsDiv);
+
+    // ---- 企业特色标签 ----
+    if (company.tags && company.tags.length > 0) {
+      var tagsDiv = document.createElement('div');
+      tagsDiv.className = 'card-tags';
+      company.tags.slice(0, 4).forEach(function (t) {
+        var tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = t;
+        tagsDiv.appendChild(tag);
+      });
+      card.appendChild(tagsDiv);
+    }
+
+    // ---- 底部操作按钮（官网 + 投递简历） ----
+    var actions = document.createElement('div');
+    actions.className = 'card-actions';
+
+    var websiteBtn = document.createElement('a');
+    websiteBtn.className = 'btn btn-outline';
+    websiteBtn.href = company.website;
+    websiteBtn.target = '_blank';
+    websiteBtn.rel = 'noopener';
+    websiteBtn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>官网';
+
+    var careerBtn = document.createElement('a');
+    careerBtn.className = 'btn btn-primary';
+    careerBtn.href = company.careerPage;
+    careerBtn.target = '_blank';
+    careerBtn.rel = 'noopener';
+    careerBtn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>投递简历';
+
+    actions.appendChild(websiteBtn);
+    actions.appendChild(careerBtn);
+    card.appendChild(actions);
+
+    return card;
+  }
+
+  // ===================== 收藏夹计数更新 =====================
+
+  function updateFavCount() {
+    var count = getFavoritesCount();
+    favCount.textContent = count;
+    favToggle.classList.toggle('active', state.showFavoritesOnly);
+  }
+
+  // ===================== 事件绑定 =====================
+
+  function bindEvents() {
+    // 搜索输入（防抖300ms，减少高频过滤）
+    searchInput.addEventListener('input', debounce(function () {
+      state.searchTerm = this.value;
+      searchClear.classList.toggle('visible', !!this.value.trim());
+      filterAndRender();
+    }, 300));
+
+    // 清除搜索按钮
+    searchClear.addEventListener('click', function () {
+      searchInput.value = '';
+      state.searchTerm = '';
+      searchClear.classList.remove('visible');
+      filterAndRender();
+      searchInput.focus();
+    });
+
+    // 分类筛选（事件委托）
+    categoryFilters.addEventListener('click', function (e) {
+      var pill = e.target.closest('.category-pill');
+      if (!pill) return;
+
+      var pills = categoryFilters.querySelectorAll('.category-pill');
+      for (var i = 0; i < pills.length; i++) pills[i].classList.remove('active');
+      pill.classList.add('active');
+      state.activeCategory = pill.dataset.category;
+      filterAndRender();
+    });
+
+    // 排序切换
+    sortSelect.addEventListener('change', function () {
+      state.sortMethod = this.value;
+      filterAndRender();
+    });
+
+    // 仅显示校招
+    campusCheckbox.addEventListener('change', function () {
+      state.campusOnly = this.checked;
+      filterAndRender();
+    });
+
+    // 收藏夹切换按钮
+    favToggle.addEventListener('click', function () {
+      state.showFavoritesOnly = !state.showFavoritesOnly;
+      updateFavCount();
+      filterAndRender();
+    });
+
+    // 回到顶部按钮（滚动超过400px时显示）
+    window.addEventListener('scroll', function () {
+      backToTop.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    backToTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // --- 启动 ---
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>

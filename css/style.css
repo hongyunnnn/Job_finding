@@ -1,0 +1,628 @@
+/* ============================================================
+   中国企业招聘信息平台 — 样式表
+   配色：绿色(#2ecc71) + 白色(#ffffff) + 深海军蓝(#2c3e50)
+   ============================================================ */
+
+/* --- CSS 自定义属性（设计令牌系统） ---
+   所有颜色、阴影、圆角统一通过变量管理。
+   好处：改一个变量值，整个网站的主题同步更新。
+   例如将 --green 从 #2ecc71 改为 #1abc9c，所有绿色元素自动切换 */
+:root {
+  --green: #2ecc71;
+  --green-dark: #27ae60;
+  --green-light: #e8f8f0;
+  --green-bg: #f4fdf8;
+  --white: #ffffff;
+  --navy: #2c3e50;
+  --navy-light: #5a6d80;
+  --navy-border: #dde4ea;
+  --navy-bg: #f5f7fa;
+  --shadow-sm: 0 1px 3px rgba(44, 62, 80, 0.06);
+  --shadow-md: 0 4px 16px rgba(44, 62, 80, 0.08);
+  --shadow-lg: 0 8px 30px rgba(44, 62, 80, 0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+  --max-width: 1280px;
+}
+
+/* --- Reset & Base ---
+   统一浏览器默认样式，消除不同浏览器之间的渲染差异。
+   box-sizing: border-box 让 padding 和 border 包含在元素宽高中，
+   避免经典的"宽度计算"问题 */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  /* 字体栈说明：
+     system-ui        → 使用操作系统原生UI字体（Windows: Segoe UI, macOS: SF Pro）
+     -apple-system    → macOS 10.11+ 旧版兼容
+     PingFang SC      → macOS/iOS 中文回退字体
+     Microsoft YaHei  → Windows 中文回退字体
+     sans-serif       → 最终回退
+     不引入外部Web字体，零网络请求，加载即渲染 */
+  background-color: var(--navy-bg);
+  color: var(--navy);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--green-dark);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--green);
+}
+
+/* --- Header --- */
+.header {
+  background: var(--white);
+  border-bottom: 1px solid var(--navy-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--navy-light);
+  background: var(--green-light);
+  padding: 2px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* --- Favorites Button --- */
+.fav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 2px solid var(--green);
+  border-radius: 24px;
+  background: var(--white);
+  color: var(--green-dark);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all var(--transition);
+}
+.fav-btn:hover {
+  background: var(--green-light);
+}
+.fav-btn.active {
+  background: var(--green);
+  color: var(--white);
+}
+
+.fav-badge {
+  background: var(--green);
+  color: var(--white);
+  font-size: 0.75rem;
+  min-width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  padding: 0 6px;
+}
+
+/* --- Main Content --- */
+.main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 20px 24px 40px;
+}
+
+/* --- Toolbar --- */
+.toolbar {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+}
+
+.search-box {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--navy-light);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 44px 12px 44px;
+  border: 2px solid var(--navy-border);
+  border-radius: 28px;
+  font-size: 1rem;
+  color: var(--navy);
+  background: var(--white);
+  transition: border-color var(--transition);
+  outline: none;
+}
+.search-input:focus {
+  border-color: var(--green);
+}
+.search-input::placeholder {
+  color: var(--navy-light);
+}
+
+.search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--navy-light);
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background var(--transition);
+  visibility: hidden;
+}
+.search-clear.visible {
+  visibility: visible;
+}
+.search-clear:hover {
+  background: var(--navy-bg);
+}
+
+/* --- Category Filters --- */
+.filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.category-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.category-pill {
+  padding: 6px 16px;
+  border: 1.5px solid var(--navy-border);
+  border-radius: 20px;
+  background: var(--white);
+  color: var(--navy);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  user-select: none;
+}
+.category-pill:hover {
+  border-color: var(--green);
+  color: var(--green-dark);
+}
+.category-pill.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--white);
+}
+
+/* --- Sort Box --- */
+.sort-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.campus-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--navy);
+  user-select: none;
+}
+
+.campus-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+
+.sort-select {
+  padding: 6px 12px;
+  border: 1.5px solid var(--navy-border);
+  border-radius: 20px;
+  background: var(--white);
+  color: var(--navy);
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+}
+.sort-select:focus {
+  border-color: var(--green);
+}
+
+/* --- Results Info --- */
+.results-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.results-count {
+  font-size: 0.9rem;
+  color: var(--navy-light);
+}
+
+/* --- Card Grid ---
+   使用 CSS Grid 的 auto-fill + minmax 实现自适应列数：
+   - >=1200px: 每行4张卡片（290*4 + 18*3 = 1214px）
+   - 900-1199px: 每行3张卡片
+   - 600-899px: 每行2张卡片
+   - <600px: 每行1张卡片（由媒体查询控制）
+   无需 JavaScript 介入，纯 CSS 响应式 */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 18px;
+}
+
+/* --- Company Card --- */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--navy-border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-star {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--navy-border);
+  transition: color var(--transition), transform var(--transition);
+}
+.card-star:hover {
+  transform: scale(1.2);
+}
+.card-star.favorited {
+  color: var(--green);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-right: 28px;
+}
+
+.card-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.card-name-group {
+  min-width: 0;
+}
+
+.card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+
+.card-name-en {
+  font-size: 0.75rem;
+  color: var(--navy-light);
+  margin-top: 1px;
+}
+
+.card-industry {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: var(--green-dark);
+  background: var(--green-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.card-cities {
+  font-size: 0.78rem;
+  color: var(--navy-light);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-cities svg {
+  flex-shrink: 0;
+}
+
+/* --- Positions --- */
+.card-positions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.position-tag {
+  font-size: 0.76rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--navy-bg);
+  color: var(--navy);
+  border: 1px solid var(--navy-border);
+  white-space: nowrap;
+}
+
+/* --- Tags --- */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.tag {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-weight: 600;
+}
+
+/* --- Card Actions --- */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: var(--white);
+}
+.btn-primary:hover {
+  background: var(--green-dark);
+  color: var(--white);
+}
+
+.btn-outline {
+  background: var(--white);
+  color: var(--green-dark);
+  border: 1.5px solid var(--green);
+}
+.btn-outline:hover {
+  background: var(--green-light);
+  color: var(--green-dark);
+}
+
+/* --- Empty State --- */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--navy-light);
+}
+.empty-state svg {
+  margin-bottom: 16px;
+  stroke: var(--navy-border);
+}
+.empty-state h3 {
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.empty-state p {
+  font-size: 0.9rem;
+}
+
+/* --- Footer --- */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--navy-light);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--navy-border);
+  background: var(--white);
+}
+.footer p {
+  line-height: 1.8;
+}
+
+/* --- Back to Top --- */
+.back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition);
+  z-index: 50;
+}
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.back-to-top:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+}
+
+/* --- Hiring Badge --- */
+.hiring-badge {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 4px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .header-inner {
+    padding: 10px 16px;
+  }
+  .title {
+    font-size: 1.1rem;
+  }
+  .subtitle {
+    display: none;
+  }
+  .main {
+    padding: 16px 14px 32px;
+  }
+  .toolbar {
+    padding: 14px;
+  }
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .sort-box {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 600px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .title {
+    font-size: 1rem;
+  }
+  .search-input {
+    font-size: 0.9rem;
+    padding: 10px 40px 10px 40px;
+  }
+  .card {
+    padding: 16px;
+  }
+  .back-to-top {
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
+}
