@@ -1,0 +1,7 @@
+# Claude Code 本地会话数据（不提交）
+.claude/
+
+# 系统文件
+Thumbs.db
+Desktop.ini
+.DS_Store
