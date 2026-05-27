@@ -1,0 +1,16 @@
+{
+  "name": "job-finding",
+  "private": true,
+  "version": "1.0.0",
+  "description": "中国企业招聘信息平台 — Fortune China 500 CS专场",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "icon": "tauri icon"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "sharp": "^0.34.5",
+    "to-ico": "^1.1.5"
+  }
+}

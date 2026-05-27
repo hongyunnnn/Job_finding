@@ -1,6 +1,12 @@
 # Claude Code 本地会话数据（不提交）
 .claude/
 
+# Rust / Cargo 构建产物
+src-tauri/target/
+
+# Node.js
+node_modules/
+
 # 系统文件
 Thumbs.db
 Desktop.ini

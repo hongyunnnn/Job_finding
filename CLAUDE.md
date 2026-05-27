@@ -58,11 +58,22 @@
 4. 保持 3 色限制：绿色 (#2ecc71) + 白色 (#ffffff) + 深海军蓝 (#2c3e50)
 5. 修改前先读 [docs/design-spec.md](docs/design-spec.md) 确认不违反设计规范
 
-### 数据更新流程
-1. 打开 [js/data.js](js/data.js)
-2. 找到对应分类区块
-3. 按数据模型添加新条目（14个字段，参见 [docs/architecture.md](docs/architecture.md)）
-4. 同步到 [企业招聘信息平台.hta](企业招聘信息平台.hta) 的对应数据区域
+### 构建 Windows .exe
+
+本机 VS 2022 安装在 `D:\vs`，构建前需设置环境变量：
+
+```bash
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="D:/vs/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64:$PATH"
+export PATH="C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64:$PATH"
+export LIB="D:/vs/VC/Tools/MSVC/14.51.36231/lib/x64;C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64;C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/ucrt/x64"
+export INCLUDE="D:/vs/VC/Tools/MSVC/14.51.36231/include;C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt;C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um;C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared"
+npx tauri build
+```
+
+也可双击 `build.bat` 一键构建。产物：
+- `企业招聘信息平台.exe`（便携版，11MB）
+- `src-tauri/target/release/bundle/`（安装包，需 NSIS 下载成功）
 5. 更新 [开发日志.md](开发日志.md) 记录变更
 6. 提交 Git commit
 
