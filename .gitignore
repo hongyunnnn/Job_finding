@@ -7,6 +7,11 @@ src-tauri/target/
 # Node.js
 node_modules/
 
+# 分发文件（不提交到仓库）
+*.exe
+*.zip
+*.hta
+
 # 系统文件
 Thumbs.db
 Desktop.ini
